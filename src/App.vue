@@ -16,9 +16,10 @@ console.log(url + "url");
 
 <style scoped>
 .logo {
-  height: 6em;
+  height: 1em;
   padding: 1.5em;
   will-change: filter;
+  font-size: 30px;
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);

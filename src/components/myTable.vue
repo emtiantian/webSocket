@@ -1,27 +1,27 @@
 <template>
-  <el-table :data="Arrays" style="width: 100%" stripe>
+  <el-table :data="data" style="width: 100%" stripe height="550">
     <el-table-column type="index" label="序号" width="150" />
     <el-table-column prop="data" label="数据" />
     <el-table-column prop="time" label="时间" width="280" />
   </el-table>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref } from "vue";
 import type { Ref } from "vue";
-const data: Ref<string> = ref("");
+const data: Ref<Array<Object>> = ref([]);
 const error: Ref<string> = ref("");
 let socket: WebSocket;
 
 const props = defineProps<{
   url: string | URL;
 }>();
-const Arrays = computed<Array<object>>(() => {
-  if (Arrays.length > 0) {
-    return Arrays.push({ data: data.value, time: new Date().getDate() });
-  }
-  const arr: Array<object> = new Array();
-  return arr.push({ data: data.value, time: new Date().getDate() });
-});
+// const Arrays = computed<Array<Object>>(() => {
+//   if (Arrays.length > 0) {
+//     return Arrays.push({ data: data.value, time: new Date().getDate() });
+//   }
+//   const arr: Array<Object> = [];
+//   return arr;
+// });
 const emit = defineEmits<{
   (e: "open"): void;
   (e: "close"): void;
@@ -43,7 +43,7 @@ function createWebSocket() {
   });
   socket.addEventListener("message", (event) => {
     console.log("socket data" + event.data);
-    data.value = event.data;
+    data.value.push({ data: event.data, time: new Date().getTime() });
   });
   return socket;
 }
