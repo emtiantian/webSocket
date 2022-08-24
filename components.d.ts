@@ -7,7 +7,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    MyTable: typeof import('./src/components/myTable.vue')['default']
     Table: typeof import('./src/components/Table.vue')['default']
   }
 }

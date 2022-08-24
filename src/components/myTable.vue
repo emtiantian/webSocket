@@ -1,8 +1,8 @@
 <template>
-  <el-table :data="arr" style="width: 100%">
-    <el-table-column type="index" label="序号" width="50" />
+  <el-table :data="Arrays" style="width: 100%" stripe>
+    <el-table-column type="index" label="序号" width="150" />
     <el-table-column prop="data" label="数据" />
-    <el-table-column prop="time" label="时间" width="180" />
+    <el-table-column prop="time" label="时间" width="280" />
   </el-table>
 </template>
 <script setup lang="ts">
@@ -42,18 +42,21 @@ function createWebSocket() {
     error.value = errorData.type;
   });
   socket.addEventListener("message", (event) => {
+    console.log("socket data" + event.data);
     data.value = event.data;
   });
   return socket;
 }
 onMounted(() => {
-  console.log("onMounted");
+  console.log("onMounted" + props.url);
   createWebSocket();
 });
 </script>
 <script lang="ts">
+import { ElTable } from "element-plus";
 export default {
   name: "myTable",
+  components: { ElTable },
   data() {
     return {
       arr: [
