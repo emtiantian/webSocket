@@ -7,6 +7,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { format } from "../util/index";
 import type { Ref } from "vue";
 const data: Ref<Array<Object>> = ref([]);
 const error: Ref<string> = ref("");
@@ -15,13 +16,7 @@ let socket: WebSocket;
 const props = defineProps<{
   url: string | URL;
 }>();
-// const Arrays = computed<Array<Object>>(() => {
-//   if (Arrays.length > 0) {
-//     return Arrays.push({ data: data.value, time: new Date().getDate() });
-//   }
-//   const arr: Array<Object> = [];
-//   return arr;
-// });
+
 const emit = defineEmits<{
   (e: "open"): void;
   (e: "close"): void;
@@ -43,10 +38,11 @@ function createWebSocket() {
   });
   socket.addEventListener("message", (event) => {
     console.log("socket data" + event.data);
-    data.value.push({ data: event.data, time: new Date().getTime() });
+    data.value.push({ data: event.data, time: format("yyyy-MM-dd hh:mm:ss") });
   });
   return socket;
 }
+
 onMounted(() => {
   console.log("onMounted" + props.url);
   createWebSocket();
@@ -57,13 +53,5 @@ import { ElTable } from "element-plus";
 export default {
   name: "myTable",
   components: { ElTable },
-  data() {
-    return {
-      arr: [
-        { data: "123", time: new Date().getDate() },
-        { data: "1234", time: new Date().getDate() },
-      ],
-    };
-  },
 };
 </script>

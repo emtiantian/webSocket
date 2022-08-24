@@ -1,30 +1,22 @@
-<script setup lang="ts">
-import myTable from "./components/myTable.vue";
-const url = (window as any).env.WebSocketUrl;
-const name = (window as any).env.name;
-// const url = "ws://10.0.0.118:18500/ws";
-console.log(url + "url");
+<script setup >
+import { ref, computed } from "vue";
+import view1 from "./views/view1.vue";
+import view2 from "./views/view2.vue";
+const routes = {
+  "/view1": view1,
+  "/view2": view2,
+};
+const name2 = window.env.name2;
+const name1 = window.env.name1;
+const currentPath = ref(window.location.hash);
+window.addEventListener("hashchange", () => {
+  currentPath.value = window.location.hash;
+});
+const currentView = computed(() => {
+  return routes[currentPath.value.slice(1) || "/view1"] || "/view1";
+});
 </script>
-
-
 <template>
-  <div class="logo">
-    {{ name }}
-  </div>
-  <myTable :url="url" />
+  <a href="#/view1">{{ name1 }}</a> | <a href="#/view2">{{ name2 }}</a>
+  <component :is="currentView" />
 </template>
-
-<style scoped>
-.logo {
-  height: 1em;
-  padding: 1.5em;
-  will-change: filter;
-  font-size: 30px;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
